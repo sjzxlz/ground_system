@@ -21,6 +21,12 @@ router.get('/', function(req, res) {
 	});
 });
 
+router.get('/show', function(req, res) {
+    res.render("show",{
+    	title : "元素展示"
+	});
+});
+
 // 注册页路由
 router.get("/reg",checkNotLogin);
 router.get("/reg",function(req,res) {
