@@ -37,6 +37,12 @@ router.get('/show', function(req, res) {
 	});
 });
 
+router.get('/map', function(req, res) {
+    res.render("map",{
+        title : "地图展示"
+    });
+});
+
 // 注册页路由
 router.get("/reg",checkNotLogin);
 router.get("/reg",function(req,res) {
@@ -132,21 +138,6 @@ function checkNotLogin(req, res, next) {
 	}
 	next();
 }
-
-// 发言路由
-router.post("/post",checkLogin);
-router.post("/post",function(req,res) {
-	var currentUser = req.session.user;
-	var post = new Post(currentUser.name, req.body.post);
-	post.save(function(err) {
-		if (err) {
-			req.flash('error', err);
-			return res.redirect('/');
-		}
-		req.flash('success', '发表成功');
-		res.redirect('/u/' + currentUser.name);
-	});
-});
 
 router.get("/u/:user",function(req,res) {
 	User.get(req.params.user, function(err, user) {

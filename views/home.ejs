@@ -1,9 +1,15 @@
 <% include header.ejs %>
+<div class="container">
+<div class="row">
+    <div class="col-md-12" role="main">
+<label class="control-label">选择图片文件</label>
 
 <form action="/" method="POST" enctype="multipart/form-data">
-    <input type="file" name="avatar">
-    <input type="file" name="avatar">
-    <input type="submit" value="submit">
+    <input type="file" class="file" name="avatar">
+</br>
+   <button type="submit" class="btn btn-primary btn-lg">提交</button>
 </form>
-
+    </div>
+</div>
+</div>
 <% include footer.ejs %>

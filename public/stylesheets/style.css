@@ -1,8 +1,14 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+body { padding-top: 60px; }
 
-a {
-  color: #00B7FF;
-}
+#user-btn-register { margin-left: 5px; }
+
+.manager-view .panel { overflow: hidden; }
+
+footer { text-align: center; line-height: 120px; }
+
+h2.fa-minus-square-o,
+h2.fa-plus-square-o { font-size: 16px; }
+
+li.dropdown .dropdown-toggle.np { padding: 0; margin: 15px 0; }
+
+#layout-map-header{border: 1px solid #FFF;}

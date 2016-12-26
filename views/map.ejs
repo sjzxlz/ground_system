@@ -1,0 +1,395 @@
+<% include header.ejs %>
+
+<div class="menu menu-left">
+    <div class="has-header scroll-content ionic-scroll">
+        <div class="scroll">
+            <div class="user-behavior">
+                <div class="list" id="leftNav">
+                    <ul class="leftNav">
+                        <li><a href="#"><label><input type="checkbox" id="global_ap" checked="checked">全球机场</label></a></li>
+                        <li><a href="#"><label><input type="checkbox" id="global_c_ap" checked="checked">全国机场</label></a></li>
+                        <li><a href="#"><label><input type="checkbox" id="global_ap" checked="checked">东部战区</label></a>
+
+                            <ul>
+                                <li class="active"><a href="#">江苏</a><ul id="obs_s1" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">浙江</a><ul id="obs_g214" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">安徽</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">福建</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">江西</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">上海市</a><ul id="obs_other" class="station_switch"></ul></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><label><input type="checkbox" id="global_ap" checked="checked">南部战区</label></a>
+                            <ul>
+                                <li class="active"><a href="#">湖南</a><ul id="obs_s1" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">广东</a><ul id="obs_g214" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">广西</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">海南</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">云南</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">贵州</a><ul id="obs_other" class="station_switch"></ul></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><label><input type="checkbox" id="global_ap" checked="checked">西部战区</label></a>
+                            <ul>
+                                <li class="active"><a href="#">四川</a><ul id="obs_s1" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">西藏</a><ul id="obs_g214" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">陕西</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">甘肃</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">宁夏</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">青海</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">新疆</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">重庆</a><ul id="obs_other" class="station_switch"></ul></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><label><input type="checkbox" id="global_ap" checked="checked">北部战区</label></a>
+                            <ul>
+                                <li class="active"><a href="#">辽宁</a><ul id="obs_s1" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">吉林</a><ul id="obs_g214" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">黑龙江</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">内蒙古</a><ul id="obs_other" class="station_switch"></ul></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><label><input type="checkbox" id="global_ap" checked="checked">中部战区</label></a>
+                            <ul>
+                                <li class="active"><a href="#">河北</a><ul id="obs_s1" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">山西</a><ul id="obs_g214" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">山东</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">河南</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">湖北</a><ul id="obs_other" class="station_switch"></ul></li>
+                                <li class="active"><a href="#">北京</a><ul id="obs_other" class="station_switch"></ul></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="search-result">
+                <div class="info"></div>
+                <div class="content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="map"></div>
+<div class="modal fade" id="modal-map" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <div data-example-id="togglable-tabs" class="bs-example bs-example-tabs">
+                    <div class="tab-content">
+                        <div aria-labelledby="home-tab" id="home" class="tab-pane fade active in" role="tabpanel"></div>
+                        <div aria-labelledby="profile-tab" id="profile" class="tab-pane fade" role="tabpanel"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var COPY = '数据中心';
+    var baseURL_MB = 'http://10.0.0.244:20020/v2/';
+
+    var basic_MB_DEM = new L.TileLayer(baseURL_MB + 'world_DEM/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        attribution: COPY
+    });
+
+    var basic_MB_bluemarble = new L.TileLayer(baseURL_MB + 'bluemarble_0_3/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        attribution: COPY
+    });
+
+    var basic_MB_merge_bluemarble = new L.TileLayer(baseURL_MB + 'merge_bluemarble/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        attribution: COPY
+    });
+
+    var basic_MB_onc = new L.TileLayer(baseURL_MB + 'onc0_10/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        attribution: COPY
+    });
+
+    var basic_MB_world_map = new L.TileLayer(baseURL_MB + 'world_map/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        attribution: COPY
+    });
+
+    var over_MB_global_airport = new L.TileLayer(baseURL_MB + 'global_airport/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png'
+    });
+    var over_utfGrid_global_airport = new L.UtfGrid(baseURL_MB + 'global_airport_eeb1dd/{z}/{x}/{y}.grid.json?callback={cb}');
+
+    var over_osm_helipad_15 = new L.TileLayer(baseURL_MB + 'osm_airport_15/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        minZoom: 15,
+        maxZoom: 15
+    });
+
+    var over_osm_helipad = new L.TileLayer(baseURL_MB + 'osm_helipad_res_latlon/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        minZoom: 16,
+        maxZoom: 16
+    });
+
+    var over_osm_no_helipad = new L.TileLayer(baseURL_MB + 'osm_no_helipad_res_latlon/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        minZoom: 16,
+        maxZoom: 16
+    });
+
+    var over_global_airport = new L.TileLayer(baseURL_MB + 'global_airport/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png'
+    });
+
+    var over_global_airport_2_7 = new L.TileLayer(baseURL_MB + 'global_airport_edb15c/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        minZoom: 2,
+        maxZoom: 7
+    });
+    var over_global_airport_8 = new L.TileLayer(baseURL_MB + 'global_airport_eeb1dd/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        minZoom: 8,
+        maxZoom: 8
+    });
+    var over_global_airport_9_15 = new L.TileLayer(baseURL_MB + 'global_airport_38f783/{z}/{x}/{y}.png', {
+        errorTileUrl: '/lib/leaflet/images/none.png',
+        minZoom: 9,
+        maxZoom: 15
+    });
+
+    var baseLayers = {
+        "DEM": basic_MB_DEM,
+        "map": basic_MB_world_map,
+        "satellite": basic_MB_bluemarble,
+        "地形图": basic_MB_onc
+    };
+
+    var overLayers = {
+        // "全球机场分布": over_global_airport
+        "全球机场分布2-7": over_global_airport_2_7,
+        "全球机场分布8": over_global_airport_8,
+        "全球机场分布9-15": over_global_airport_9_15
+    };
+
+    var map = L.map('map', {
+        minZoom: 0,
+        maxZoom: 16,
+        zoomIn: 1,
+        zoomOut: 1,
+        layers: [
+            basic_MB_world_map,
+            // over_osm_helipad,
+            // over_osm_helipad_15,
+            // over_osm_no_helipad,
+            // over_MB_global_airport,
+            over_utfGrid_global_airport,
+            over_global_airport_2_7
+        ],
+        zoomControl: false,
+        contextmenu: true,
+        contextmenuWidth: 140,
+        contextmenuItems: [{
+            text: '显示经纬度',
+            callback: showCoordinates
+        }, {
+            text: '居中显示',
+            callback: centerMap
+        }, '-', {
+            text: '放大',
+            icon: '/lib/leaflet/images/zoom-in.png',
+            callback: zoomIn
+        }, {
+            text: '缩小',
+            icon: '/lib/leaflet/images/zoom-out.png',
+            callback: zoomOut
+        }]
+    }).setView([40, 90], 2);
+
+    L.control.layers(baseLayers, overLayers).addTo(map);
+
+    L.Control.zoomHome({
+        zoomHomeTitle: "全球"
+    }).addTo(map);
+
+    L.control.fullscreen({
+        position: 'topright',
+        title: "全屏",
+        content: null,
+        forceSeparateButton: false,
+        forcePseudoFullscreen: false
+    }).addTo(map);
+
+    L.control.mousePosition().addTo(map);
+    L.control.scale().addTo(map);
+    L.layerGroup().addTo(map);
+
+
+    var legend = L.control({position: 'bottomleft'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend');
+        var labels = [];
+
+        labels.push('<i class="ap_le_military"></i><i class="ap_le_military_c"></i>军用机场');
+        labels.push('<i class="ap_le_public"></i><i class="ap_le_public_c"></i>公共机场');
+        labels.push('<i class="ap_le_private"></i><i class="ap_le_private_c"></i>私人机场');
+        labels.push('<i class="ap_le_pm"></i><i class="ap_le_pm_c"></i>军民两用机场');
+        labels.push('<i class="ap_le_abandoned"></i><i class="ap_le_abandoned_c"></i>废弃机场');
+
+        div.innerHTML = labels.join('<br>');
+        return div;
+    };
+    legend.addTo(map);
+
+    over_utfGrid_global_airport.on('click', function (e) {
+        console.log(e.data);
+        var jsonData = [];
+        for (var key in e.data) {
+            jsonData.push("<b>" + key + "</b>: " + e.data[key]);
+        }
+
+        // $('#modal-map').modal('show');
+        $('#modal-map #home').html(jsonData.join('<br />'));
+    });
+
+    function resizeMap() {
+        $('#map').width($(window).width() - $('.menu-left').width());
+        $('#map').height($(window).height() - ($('#layout-map-header').height() + 2));
+    }
+
+    function resizeSearch() {
+        $('.search-result .content').height($(window).height() - ($('.map_search').height() + $('.user-behavior').height() + $('#layout-map-header').height() + 82));
+    }
+
+    function searchBtnAttr() {
+        if ($('#search-keyword').val() == '') {
+            $('#search-point').attr('disabled', true);
+        }
+        else {
+            $('#search-point').removeAttr('disabled');
+        }
+    }
+
+    $('.leaflet-control-layers-overlays').empty();
+    $('.leaflet-control-zoomhome-out').remove();
+    $('.leaflet-control-zoomhome-in').remove();
+
+    resizeMap();
+    resizeSearch();
+
+    $(window).resize(function () {
+        resizeMap();
+        resizeSearch();
+    });
+
+    map.on("zoomend", function (e) {
+        console.log(+map.getZoom());
+    });
+
+    $(document).ready(function () {
+
+        $('#modal-map').draggable({
+            handle: ".modal-header"
+        });
+        $('#modal-map').resizable();
+
+        function reposition() {
+            var modal = $(this), dialog = modal.find('.modal-dialog');
+            modal.css('display', 'block');
+            modal.css('overflow', 'hidden');
+            dialog.css("margin-top", Math.max(0, ($(window).height() - dialog.height()) / 2));
+        }
+
+        $('.modal').on('show.bs.modal', reposition);
+        $(window).on('resize', function () {
+            $('.modal:visible').each(reposition);
+        });
+
+        resizeMap();
+
+        map.on('zoomend', function (e) {
+
+            console.log(map.getZoom());
+
+            if (map.getZoom() == 8) {
+                map.addLayer(over_global_airport_8);
+            } else {
+                map.removeLayer(over_global_airport_8);
+            }
+
+            if (map.getZoom() >= 9) {
+                map.addLayer(over_global_airport_9_15);
+            } else {
+                map.removeLayer(over_global_airport_9_15);
+            }
+
+            if (map.getZoom() == 15) {
+                map.addLayer(over_osm_helipad_15);
+            } else {
+                map.removeLayer(over_osm_helipad_15);
+            }
+
+            if (map.getZoom() == 16) {
+                map.addLayer(over_osm_helipad);
+                map.addLayer(over_osm_no_helipad);
+            } else {
+                map.removeLayer(over_osm_helipad);
+                map.removeLayer(over_osm_no_helipad);
+            }
+
+        });
+
+        $(".leftNav").accordion({
+            speed: 500
+        });
+
+        $('.leftNav li a label').bind('click', function (e) {
+            e.stopPropagation();
+        });
+
+        $('.leftNav li ul li a').bind('click', function (e) {
+            $('#global_helipad').attr("checked", 'checked');
+            map.addLayer(over_osm_helipad);
+        });
+
+        $('#global_ap').click(function () {
+            toggleLayer(over_MB_global_airport);
+        });
+        $('#global_helipad').click(function () {
+            toggleLayer(over_osm_helipad);
+        });
+
+        $('form.map_search').submit(function () {
+            return false;
+        });
+
+        $('#search-point').click(function () {
+
+            if ($('#search-word').val() == '') {
+                alert('关键字不能为空');
+            } else {
+                resizeSearch();
+                searchMap.point();
+                $('#leftNav p.cat').hide();
+            }
+
+        });
+
+
+    });
+</script>
+<script type="text/javascript">
+    //<!--
+    $('#Nav-map-airport').addClass('active');
+    //-->
+</script>
+<% include footer.ejs %>
