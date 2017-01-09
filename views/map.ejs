@@ -1,16 +1,41 @@
 <% include header.ejs %>
 <div class="container-fluid">
-    <div id="map"></div>
-    <script>
-        var map = L.map('map').setView([36, 103.6], 8);
+<div id='map' style="height: 800px"></div>
+<script>
+    var COPY = '61243';
+    var mapUrl = 'http://localhost:8888/v2/';
 
-        L.tileLayer('http://localhost:8888/v2/world_google_1-10/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">googlemap</a> contributors'
-        }).addTo(map);
+    var littleton = L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.'),
+        denver    = L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.'),
+        aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
+        golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
 
-        L.marker([36, 103.6]).addTo(map)
-            .bindPopup('兰州市.<br> 城关区.')
-            .openPopup();
-    </script>
+    var cities = L.layerGroup([littleton, denver, aurora, golden]);
+
+    var grayscale = L.tileLayer(mapUrl + 'world_google_1-10/{z}/{x}/{y}.png', {
+            attribution: COPY}),
+        streets  = L.tileLayer(mapUrl + 'waxtest/{z}/{x}/{y}.png', {
+            attribution: COPY});
+
+    var baseLayers = {
+        "影像": grayscale,
+        "地图": streets
+    };
+
+    var overlayLayers = {
+        "城市": cities
+    };
+
+    var map = L.map('map', {
+        center: [39.73, -104.99],
+        zoom: 5,
+        layers: [grayscale,
+            cities]
+    });
+
+    L.control.layers(baseLayers, overlayLayers).addTo(map);
+    L.control.scale().addTo(map);
+</script>
 </div>
 <% include footer.ejs %>
+
